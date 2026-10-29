@@ -31,16 +31,16 @@ export function Drawer({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="animate-fade fixed inset-0 z-50 bg-navy-950/45 backdrop-blur-[2px]" />
+        <Dialog.Overlay className="animate-fade fixed inset-0 z-50 bg-[#1b2333]/35 backdrop-blur-[3px]" />
         <Dialog.Content
           className={cn(
-            'animate-slide-in fixed inset-y-0 right-0 z-50 flex w-full flex-col border-l border-line bg-canvas shadow-float outline-none',
+            'animate-slide-in fixed inset-y-0 right-0 z-50 flex w-full flex-col rounded-l-[1.75rem] border border-white/80 bg-canvas shadow-float outline-none sm:inset-y-3 sm:right-3 sm:rounded-[1.75rem]',
             widths[width],
           )}
         >
-          <header className="flex items-start gap-4 border-b border-line bg-surface px-5 py-4">
+          <header className="flex items-start gap-4 rounded-t-[1.75rem] border-b border-white/70 bg-surface/80 px-5 py-4 backdrop-blur-sm">
             <div className="min-w-0 flex-1">
-              <Dialog.Title className="truncate pr-2 text-base font-semibold text-ink">
+              <Dialog.Title className="truncate pr-2 text-base font-semibold tracking-tight text-ink">
                 {title}
               </Dialog.Title>
               {description ? (
@@ -61,7 +61,9 @@ export function Drawer({
             {children}
           </div>
           {footer ? (
-            <footer className="border-t border-line bg-surface px-5 py-3.5">{footer}</footer>
+            <footer className="border-t border-white/70 bg-surface/80 px-5 py-3.5 backdrop-blur-sm">
+              {footer}
+            </footer>
           ) : null}
         </Dialog.Content>
       </Dialog.Portal>

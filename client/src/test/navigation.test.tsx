@@ -23,7 +23,7 @@ describe('sidebar navigation', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByRole('link', { name: /Overview/ })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('link', { name: /Overview/ })).toHaveAttribute('href', '/overview');
     expect(screen.getByRole('link', { name: /Transactions/ })).toHaveAttribute(
       'href',
       '/transactions',

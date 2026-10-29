@@ -25,10 +25,10 @@ export function Tooltip({
         <TooltipPrimitive.Content
           side={side}
           sideOffset={6}
-          className="z-[90] max-w-xs rounded-lg bg-navy-900 px-2.5 py-1.5 text-[11px] leading-relaxed text-white shadow-float animate-fade"
+          className="z-[90] max-w-xs rounded-lg bg-ink px-2.5 py-1.5 text-[11px] leading-relaxed text-white shadow-float animate-fade"
         >
           {content}
-          <TooltipPrimitive.Arrow className="fill-navy-900" />
+          <TooltipPrimitive.Arrow className="fill-ink" />
         </TooltipPrimitive.Content>
       </TooltipPrimitive.Portal>
     </TooltipPrimitive.Root>

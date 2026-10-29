@@ -7,7 +7,7 @@ const toneClasses: Record<BadgeTone, string> = {
   warning: 'border-warning-100 bg-warning-50 text-warning-700',
   danger: 'border-danger-100 bg-danger-50 text-danger-700',
   info: 'border-info-100 bg-info-50 text-info-700',
-  neutral: 'border-line-strong bg-surface-sunken text-muted',
+  neutral: 'border-white/80 bg-surface-sunken text-muted',
   brand: 'border-brand-100 bg-brand-50 text-brand-700',
   violet: 'border-violet-200 bg-violet-50 text-violet-700',
 };
@@ -31,7 +31,7 @@ export function Badge({ className, tone = 'neutral', dot = false, children, ...p
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2 py-0.5 text-[11px] font-semibold leading-5',
+        'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-[11px] font-semibold leading-5 shadow-[inset_0_1px_0_rgb(255_255_255/0.8)]',
         toneClasses[tone],
         className,
       )}

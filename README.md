@@ -13,7 +13,8 @@ npm install
 npm run dev
 ```
 
-- Client: <http://localhost:5173>
+- Landing page: <http://localhost:5173/>
+- Workspace overview: <http://localhost:5173/overview>
 - API: <http://localhost:4000/api/v1/health>
 - Realtime: Socket.IO namespace `/realtime` on the API server
 - Persistence: SQLite file at `server/data/ledgerlens-demo.db` by default
@@ -43,9 +44,25 @@ The Express server serves the built client from `client/dist` when it exists, so
 | `npm run typecheck` | TypeScript checks for both workspaces |
 | `npm run reset-demo` | Delete only `environment=demo` records and reseed fixtures |
 
+## Interface
+
+The product has two entry points:
+
+- **`/` — landing page.** Product explanation, real status-model wording, a demo-lab walkthrough and a screenshot of the actual Overview rendered by this codebase. The hero is animated with Framer Motion, and the rotating status detail uses the four real LedgerLens dimensions.
+- **`/overview` — workspace.** The dashboard moved here; every existing application view (`/transactions`, `/reconciliation`, `/settlements`, `/refunds`, `/events`, `/demo`, `/settings`) is unchanged in purpose and remains inside the shared app shell.
+
+The interface uses a claymorphism design system centralized in `client/src/styles/index.css` and shared primitives:
+
+- Warm canvas gradients, ivory raised surfaces and sunken inset fields.
+- Reusable `clay-panel`, `clay-panel-lifted`, `clay-inset`, `clay-pill`, `clay-pressable` and `clay-hero-glow` treatments.
+- Layered elevation tokens (`--shadow-clay`, `--shadow-clay-sm`, `--shadow-clay-inset`, `--shadow-float`) and consistent radii (`rounded-card`, `rounded-field`).
+- Shared buttons, cards, badges, fields, tables, drawers, dialogs, metric cards and headers styled through the same tokens.
+- Visible focus rings, semantic headings and landmarks, labelled controls, and reduced-motion handling for CSS transitions plus the hero's JS animation and status rotation.
+- Light theme only. No dark-mode migration was introduced.
+
 ## Five-minute demo
 
-1. Open **Overview**. Check the range presets, currency-grouped captured value, pending settlement position and the latest reconciliation run.
+1. Open **Overview** at `/overview` (the landing page at `/` links to it). Check the range presets, currency-grouped captured value, pending settlement position and the latest reconciliation run.
 2. Open **Transactions**. Filter by payment, settlement, reconciliation and refund status. Open a transaction with the URL query parameter `?transaction=TXN-DEMO-0001` (or click a row) and inspect the four independent status dimensions, event history and linked records.
 3. Run **Payment success** in **Demo lab**. The new payment appears without a socket refresh; the realtime event also produces a toast. Settlement is not inferred.
 4. Run **Amount mismatch** and **Missing order**. Open **Reconciliation**, then open an exception. The drawer shows expected vs observed amounts, evidence, a suggested action and the audit trail.
@@ -59,6 +76,7 @@ See [docs/demo-walkthrough.md](docs/demo-walkthrough.md) for the detailed path a
 
 ## What is implemented
 
+- **Landing page:** product overview with the supplied 21st.dev hero adapted to the existing React/Vite/Tailwind stack, real status-model content, a screenshot captured from this Overview build, and links into the demo lab and workspace.
 - **Transactions:** paginated/searchable list with independent payment, settlement, reconciliation and refund filters; a detail view with order comparison, event summaries, exceptions, settlements, refunds, related attempts, metadata redaction and payment-scoped reconciliation.
 - **Reconciliation:** deterministic matching with explainable exceptions and stored evidence; amount/currency mismatch, missing order, missing payment, duplicate payment and duplicate distinct-event detection; idempotent re-runs; assignment and resolution workflows; append-only audit records; run history.
 - **Event log:** every event and every delivery, including duplicate deliveries and rejected signatures; processing stages; sanitized payload summaries; links to the resulting payment/order.
@@ -118,9 +136,10 @@ The default path is relative to the server workspace when launched through npm: 
 ledgerlens/
 ├─ client/                    React 19 + Vite + TypeScript + Tailwind
 │  ├─ src/lib/                API client, query hooks, formatting, status metadata
-│  ├─ src/components/         UI primitives, layout, drawers, providers
-│  ├─ src/pages/              Overview, transactions, reconciliation, settlements,
-│  │                          refunds, event log, demo lab, settings
+│  ├─ src/components/         UI primitives, hero, layout, drawers, providers
+│  ├─ src/pages/              Landing, overview, transactions, reconciliation,
+│  │                          settlements, refunds, event log, demo lab, settings
+│  ├─ src/styles/             Claymorphism tokens and global styles
 │  └─ src/test/               Vitest + Testing Library suites
 ├─ server/                    Express 5 + TypeScript (CommonJS build)
 │  ├─ src/db/                 DocStore interface, SQLite and Mongoose adapters
@@ -144,17 +163,17 @@ Start with [docs/api.md](docs/api.md). `/meta` reports the status model, reconci
 The repository includes:
 
 - **Server:** 26 passing Vitest/Supertest tests across reconciliation, API contract, CORS origin handling, webhook signature/idempotency and demo isolation.
-- **Client:** 16 passing Vitest/Testing Library tests across status badges, navigation, transaction filter/loading/error/empty states, event drawer evidence and realtime event dedupe.
+- **Client:** 17 passing Vitest/Testing Library tests across status badges, landing content and CTAs, navigation, transaction filter/loading/error/empty states, event drawer evidence and realtime event dedupe.
 
 Last verified in this workspace:
 
 ```text
 npm run typecheck   # server and client pass
-npm test            # server 26 passed, client 16 passed
+npm test            # server 26 passed, client 17 passed
 npm run build       # server compile and client production build pass
 ```
 
-The UI was also exercised in a browser against the SQLite demo store: all list views, transaction/exception/event drawers, transaction filters, a demo scenario run, realtime toasts and the reset confirmation flow.
+The UI was also exercised in the in-app browser against the SQLite demo store: the landing page and every workspace route, landing-to-overview navigation, the mobile navigation drawer, the skip link, a 1600 px desktop frame and a 390 px mobile frame. Console errors and horizontal overflow were checked on each route. The supplied hero animation and rotating status detail were reviewed; reduced-motion behavior is implemented through `useReducedMotion` and the CSS media query, but the browser tooling did not expose OS-level reduced-motion emulation.
 
 ## Configuration
 

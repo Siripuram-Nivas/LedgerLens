@@ -9,7 +9,7 @@ import { ChevronDown, Search } from 'lucide-react';
 import { cn } from '../../lib/cn';
 
 const fieldBase =
-  'h-9 w-full rounded-lg border border-line-strong bg-surface px-3 text-[13px] text-ink shadow-[0_1px_1px_rgb(15_23_42/0.02)] transition placeholder:text-muted-light hover:border-muted-light focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-muted';
+  'h-10 w-full rounded-field border border-white/75 bg-surface-sunken px-3 text-[13px] text-ink shadow-[inset_3px_3px_8px_rgb(44_57_87/0.12),inset_-3px_-3px_8px_rgb(255_255_255/0.9)] transition placeholder:text-muted-light hover:bg-[#eef1f8] focus:border-brand-400 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-brand-200 disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-muted disabled:opacity-70';
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
   function Input({ className, ...props }, ref) {
@@ -24,7 +24,7 @@ export const Textarea = forwardRef<
   return (
     <textarea
       ref={ref}
-      className={cn(fieldBase, 'h-auto min-h-20 resize-y py-2 leading-relaxed', className)}
+      className={cn(fieldBase, 'h-auto min-h-20 resize-y py-2.5 leading-relaxed', className)}
       {...props}
     />
   );
@@ -66,7 +66,7 @@ export function SearchInput({
   return (
     <div className={cn('relative', className)}>
       <Search
-        className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-light"
+        className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-light"
         aria-hidden
       />
       <input
@@ -75,7 +75,7 @@ export function SearchInput({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         aria-label={label ?? placeholder}
-        className={cn(fieldBase, 'pl-8 pr-3 [&::-webkit-search-cancel-button]:hidden')}
+        className={cn(fieldBase, 'pl-9 pr-3 [&::-webkit-search-cancel-button]:hidden')}
         {...props}
       />
     </div>

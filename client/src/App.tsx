@@ -8,8 +8,12 @@ import { TooltipProvider } from './components/ui/Tooltip';
 import { AppBootstrap } from './components/AppBootstrap';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AppShell } from './components/layout/AppShell';
+import { BrandMark } from './components/layout/BrandMark';
 import { NotFoundPage } from './pages/NotFoundPage';
 
+const LandingPage = lazy(() =>
+  import('./pages/LandingPage').then((module) => ({ default: module.LandingPage })),
+);
 const OverviewPage = lazy(() =>
   import('./pages/OverviewPage').then((module) => ({ default: module.OverviewPage })),
 );
@@ -38,52 +42,84 @@ const SettingsPage = lazy(() =>
 function RouteFallback() {
   return (
     <div className="space-y-4" role="status" aria-label="Loading view">
-      <div className="shimmer h-8 w-56 rounded-md" aria-hidden />
-      <div className="shimmer h-4 w-80 max-w-full rounded-md" aria-hidden />
+      <div className="shimmer h-8 w-56 rounded-xl" aria-hidden />
+      <div className="shimmer h-4 w-80 max-w-full rounded-lg" aria-hidden />
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}
-            className="shimmer h-24 rounded-card border border-line bg-surface"
+            className="shimmer h-24 rounded-card border border-white/70 bg-surface"
             aria-hidden
           />
         ))}
       </div>
-      <div className="shimmer h-72 rounded-card border border-line bg-surface" aria-hidden />
+      <div className="shimmer h-72 rounded-card border border-white/70 bg-surface" aria-hidden />
     </div>
   );
 }
 
-export function App() {
+function LandingFallback() {
+  return (
+    <div
+      className="flex min-h-screen items-center justify-center px-4"
+      role="status"
+      aria-label="Loading LedgerLens"
+    >
+      <div className="flex items-center gap-3">
+        <BrandMark className="h-10 w-10" />
+        <div>
+          <p className="text-base font-semibold tracking-tight text-ink">LedgerLens</p>
+          <p className="text-[10px] uppercase tracking-[0.14em] text-muted">Opening the lens</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Workspace() {
   return (
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <RealtimeProvider>
           <TooltipProvider>
-            <BrowserRouter>
-              <AppBootstrap>
-                <ErrorBoundary>
-                  <Suspense fallback={<RouteFallback />}>
-                    <Routes>
-                      <Route element={<AppShell />}>
-                        <Route index element={<OverviewPage />} />
-                        <Route path="transactions" element={<TransactionsPage />} />
-                        <Route path="reconciliation" element={<ReconciliationPage />} />
-                        <Route path="settlements" element={<SettlementsPage />} />
-                        <Route path="refunds" element={<RefundsPage />} />
-                        <Route path="events" element={<EventLogPage />} />
-                        <Route path="demo" element={<DemoLabPage />} />
-                        <Route path="settings" element={<SettingsPage />} />
-                        <Route path="*" element={<NotFoundPage />} />
-                      </Route>
-                    </Routes>
-                  </Suspense>
-                </ErrorBoundary>
-              </AppBootstrap>
-            </BrowserRouter>
+            <AppBootstrap>
+              <ErrorBoundary>
+                <Suspense fallback={<RouteFallback />}>
+                  <AppShell />
+                </Suspense>
+              </ErrorBoundary>
+            </AppBootstrap>
           </TooltipProvider>
         </RealtimeProvider>
       </ToastProvider>
     </QueryClientProvider>
+  );
+}
+
+export function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          index
+          element={
+            <Suspense fallback={<LandingFallback />}>
+              <LandingPage />
+            </Suspense>
+          }
+        />
+        <Route element={<Workspace />}>
+          <Route path="overview" element={<OverviewPage />} />
+          <Route path="transactions" element={<TransactionsPage />} />
+          <Route path="reconciliation" element={<ReconciliationPage />} />
+          <Route path="settlements" element={<SettlementsPage />} />
+          <Route path="refunds" element={<RefundsPage />} />
+          <Route path="events" element={<EventLogPage />} />
+          <Route path="demo" element={<DemoLabPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }

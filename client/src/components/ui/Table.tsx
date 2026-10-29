@@ -11,7 +11,7 @@ export function Table({
   className?: string;
 }) {
   return (
-    <div className="scrollbar-thin overflow-x-auto">
+    <div className="scrollbar-thin overflow-x-auto rounded-b-card">
       <table
         className={cn('w-full border-collapse text-left text-[13px]', className)}
         style={{ minWidth }}
@@ -24,7 +24,7 @@ export function Table({
 
 export function THead({ children }: { children: ReactNode }) {
   return (
-    <thead className="border-b border-line bg-surface-sunken/70">
+    <thead className="border-b border-white/70 bg-surface-sunken/80">
       <tr>{children}</tr>
     </thead>
   );
@@ -40,7 +40,7 @@ export function Th({
     <th
       scope="col"
       className={cn(
-        'whitespace-nowrap px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted',
+        'whitespace-nowrap px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.09em] text-muted',
         align === 'right' && 'text-right',
         align === 'center' && 'text-center',
         className,
@@ -53,7 +53,7 @@ export function Th({
 }
 
 export function TBody({ children }: { children: ReactNode }) {
-  return <tbody className="divide-y divide-line bg-surface">{children}</tbody>;
+  return <tbody className="divide-y divide-line/80">{children}</tbody>;
 }
 
 export function Tr({
@@ -62,7 +62,13 @@ export function Tr({
   ...props
 }: HTMLAttributes<HTMLTableRowElement>) {
   return (
-    <tr className={cn('transition-colors hover:bg-surface-sunken/70', className)} {...props}>
+    <tr
+      className={cn(
+        'transition-colors duration-150 hover:bg-brand-50/45 focus-within:bg-brand-50/45',
+        className,
+      )}
+      {...props}
+    >
       {children}
     </tr>
   );
@@ -77,7 +83,7 @@ export function Td({
   return (
     <td
       className={cn(
-        'px-4 py-3 align-middle text-ink-soft',
+        'px-4 py-3.5 align-middle text-ink-soft',
         align === 'right' && 'text-right',
         align === 'center' && 'text-center',
         className,
