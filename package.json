@@ -1,0 +1,26 @@
+{
+  "name": "ledgerlens",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LedgerLens — real-time payment reconciliation platform",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,client -c cyan,magenta \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w server && npm run build -w client",
+    "start": "npm run start -w server",
+    "test": "npm run test -w server && npm run test -w client",
+    "test:server": "npm run test -w server",
+    "test:client": "npm run test -w client",
+    "typecheck": "npm run typecheck -w server && npm run typecheck -w client",
+    "reset-demo": "npm run reset-demo -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}

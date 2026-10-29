@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+*.log
+.env
+.env.local
+.env.*.local
+/data/
+server/data/*.db
+server/data/*.db-shm
+server/data/*.db-wal
+server/data/*.sqlite
+.DS_Store
+Thumbs.db
+.playwright/
